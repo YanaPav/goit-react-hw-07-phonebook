@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
+import PropTypes from 'prop-types';
 import {deleteContact} from 'redux/operations'
 
 export const ContactItem = ({ name, number, id }) => {
@@ -25,3 +26,9 @@ export const ContactItem = ({ name, number, id }) => {
     </li>
   );
 };
+
+ContactItem.propTypes = {
+  name: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+}
