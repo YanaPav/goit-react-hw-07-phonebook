@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import css from './ContactForm.module.css';
 import { useSelector, useDispatch } from 'react-redux';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { addContact } from 'redux/operations';
 
 export const ContactForm = () => {
   const contacts = useSelector(state => state.contacts.items);
+  const isLoading = useSelector(state => state.contacts.isLoading);
+  const error = useSelector(state => state.contacts.error);
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -18,10 +21,12 @@ export const ContactForm = () => {
 
   const addContactToStore = contactObject => {
     if (isDuplicate(contactObject.name)) {
-      return alert(`${contactObject.name} is alredy in contacts`);
+      Notify.warning(`${contactObject.name} is alredy in contacts`);
+      return;
     }
 
-    return dispatch(addContact(contactObject));
+    dispatch(addContact(contactObject));
+    resetState();
   };
 
   const handleChange = e => {
@@ -40,7 +45,6 @@ export const ContactForm = () => {
     };
 
     addContactToStore(contactObj);
-    resetState();
   };
 
   const resetState = () => {
@@ -74,7 +78,9 @@ export const ContactForm = () => {
           onChange={handleChange}
         />
       </label>
-      <button type="submit">Add contact</button>
+      <button type="submit" disabled={isLoading === 'add'}>
+        {isLoading === 'add' ? 'Adding...' : 'Add contact'}
+      </button>
     </form>
   );
 };
