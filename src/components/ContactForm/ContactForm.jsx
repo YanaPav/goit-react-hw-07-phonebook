@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import css from './ContactForm.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
@@ -18,6 +18,10 @@ export const ContactForm = () => {
     );
     return result;
   };
+
+  useEffect(() => {
+    error?.type === 'add' && Notify.failure(`${error.message}`);
+  }, [error]);
 
   const addContactToStore = contactObject => {
     if (isDuplicate(contactObject.name)) {

@@ -51,7 +51,7 @@ const contactsSlice = createSlice({
         },
         [addContact.rejected](state, { payload }) {
             state.isLoading = false
-            state.error = payload
+            state.error = {type: 'add', message: payload}
         }
      }
     
