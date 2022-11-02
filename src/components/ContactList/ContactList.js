@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import CircularProgress from '@mui/material/CircularProgress';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { fetchContacts } from 'redux/operations'
 import { ContactItem } from '../ContactItem/ContactItem'
 import css from './ContactList.module.css';
@@ -18,18 +17,15 @@ export const ContactList = () => {
         dispatch(fetchContacts())
     }, [dispatch])   
 
-    useEffect(() => {
-        error && Notify.failure(error)
-    }, [error])
-
     const filtredContacts = contacts?.filter(({ name }) =>
     name.toLowerCase().includes(filterValue.toLowerCase())
     );
     
     return (
         <>
-            {isLoading === 'fetch' && <CircularProgress/>}
-        
+            {isLoading === 'fetch' && <CircularProgress />}
+            
+            {error?.type === 'fetch' && <div>{error.message}</div>}        
             {contacts && <ul className={css.contactsList}>
                 {filtredContacts?.map(({ name, phone, id }) => {
                     return <ContactItem key={id} name={name} number={phone} id={id} />

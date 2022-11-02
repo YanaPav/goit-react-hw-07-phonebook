@@ -23,7 +23,7 @@ const contactsSlice = createSlice({
         },
         [fetchContacts.rejected](state, { payload }) {
             state.isLoading = false
-            state.error = payload
+            state.error = {type: 'fetch', message: payload}
         },
 
         
@@ -35,9 +35,9 @@ const contactsSlice = createSlice({
             state.error = null
             state.items = state.items.filter(item => item.id !== payload.id )                        
         },
-        [deleteContact.rejected](state, { payload }) {
+        [deleteContact.rejected](state, action) {
             state.isLoading = false
-            state.error = payload
+            state.error = {id: action.meta.arg, message: action.payload}
         },
         
 

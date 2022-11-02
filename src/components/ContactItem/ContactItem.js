@@ -11,8 +11,8 @@ export const ContactItem = ({ name, number, id }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (error) Notify.failure(error)
-  }, [error])
+    if (error?.id === id) Notify.failure(error.message)
+  }, [error, id])
   
 
   return (
